@@ -1,0 +1,167 @@
+.ab-video-slider {
+    --slider-gap: 20px;
+    --item-width: min(250px, 70vw);
+    padding: var(--slider-gap) 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.ab-video-track {
+    display: flex;
+    gap: var(--slider-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    padding: 0 var(--slider-gap);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.ab-video-item {
+    flex: 0 0 var(--item-width);
+    scroll-snap-align: start;
+}
+
+.video-wrapper {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.lazy-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+/* Playing state */
+.video-wrapper.playing::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Scrollbar styling */
+.ab-video-track::-webkit-scrollbar {
+    height: 6px;
+}
+
+.ab-video-track::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.ab-video-track::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.ab-video-track::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.video-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+    transition: opacity 0.3s;
+}
+
+.video-wrapper.loading::before {
+    opacity: 1;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Play icon */
+.video-wrapper:not(.playing):not(.loading)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 15px 0 15px 25px;
+    border-color: transparent transparent transparent #ffffff;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Show play icon when preview is done and video is paused */
+.video-wrapper.preview-done:not(.playing):not(.loading):hover::after {
+    opacity: 0.8;
+}
+
+/* Loading spinner */
+.video-wrapper.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Hover effect */
+.video-wrapper.preview-done:hover {
+    opacity: 0.9;
+}
+
+/* Playing state overlay */
+.video-wrapper.playing::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin-top: -25px;
+    margin-left: -25px;
+    background: url('../play.webp') no-repeat center center;
+    background-size: contain;
+    pointer-events: none;
+    z-index: 2;
+}
